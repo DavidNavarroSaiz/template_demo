@@ -1,17 +1,15 @@
 install:
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
-	#force install latest whisper
-	pip install --upgrade --no-deps --force-reinstall git+https://github.com/openai/whisper.git
+
 test:
-	python -m pytest -vv --cov=main --cov=mylib test_*.py
+	python -m pytest -vv test_*.py
 
 format:	
-	black *.py hugging-face/zero_shot_classification.py hugging-face/hf_whisper.py
+	black *.py
 
 lint:
-	pylint --disable=R,C --ignore-patterns=test_.*?py *.py mylib/*.py\
-		 hugging-face/zero_shot_classification.py hugging-face/hf_whisper.py
+	pylint --disable=R,C *.py
 
 container-lint:
 	docker run --rm -i hadolint/hadolint < Dockerfile
@@ -24,7 +22,6 @@ checkgpu:
 
 refactor: format lint
 
-deploy:
-	#deploy goes here
+
 		
-all: install lint test format deploy
+all: install lint test format 
